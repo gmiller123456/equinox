@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title></title>
+<link rel="stylesheet" href="default.css">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+body{}
+</style>
+</head>    
+<body>
+
+<script>
+
+/*
+//Table 27A for years -1000 to +1000
+Y=year/1000;
+//March equinox
+JDE0=1721139.29189 + 365242.13740*Y + 0.06134*Y*Y + 0.00111*Y*Y*Y - 0.00071*Y*Y*Y*Y;
+
+//Table 27B for years +1000 to +3000
+Y=(year-2000)/1000;
+//March equinox
+JDE0=2451623.80984 + 365242.37404*Y + 0.05169*Y*Y - 0.00411*Y*Y*Y - 0.00057*Y*Y*Y*Y;
+//June solstice
+JDE0=2451716.56767 + 365241.62603*Y + 0.00325*Y*Y + 0.00888*Y*Y*Y - 0.00030*Y*Y*Y*Y;
+//Sept equinox
+JDE0=2451810.21715 + 365242.01767*Y - 0.11575*Y*Y + 0.00337*Y*Y*Y + 0.00078*Y*Y*Y*Y;
+//Dec solstice
+JDE0=2451900.05952 + 365242.74049*Y - 0.06223*Y*Y - 0.00823*Y*Y*Y + 0.00032*Y*Y*Y*Y;
+*/
+year=1962;
+Y=(year-2000)/1000;
+const JDE0=2451716.56767 + 365241.62603*Y + 0.00325*Y*Y + 0.00888*Y*Y*Y - 0.00030*Y*Y*Y*Y;
+
+const rad=Math.PI/180;    
+const T=(JDE0 - 2451545.0)/36525;
+const W=(35999.373*T - 2.47)*rad;
+const Δλ=1 + 0.0334*Math.cos(W) + 0.0007*Math.cos(2*W);
+
+console.log("Y",Y);
+console.log("JDE0",JDE0);
+console.log("T",T);
+console.log("W",W);
+console.log("Δλ",Δλ);
+
+const table27c=[
+    [485,   324.96,     1934.136],
+    [203,   337.23,     32964.467],
+    [199,   342.08,     20.186],
+    [182,   27.85,      445267.112],
+    [156,   73.14,      45036.886],
+    [136,   171.52,     22518.443],
+    [77,    222.54,     65928.934],
+    [74,    296.72,     3034.906],
+    [70,    243.58,     9037.513],
+    [58,    119.81,     33718.147],
+    [52,    297.17,     150.678],
+    [50,    21.02,      2281.226],
+    [45,    247.54,     29929.562],
+    [44,    325.15,     31555.956],
+    [29,    60.93,      4443.417],
+    [18,    155.12,     67555.328],
+    [17,    288.79,     4562.452],
+    [16,    198.04,     62894.029],
+    [14,    199.76,     31436.921],
+    [12,    95.39,      14577.848],
+    [12,    287.11,     31931.756],
+    [12,    320.81,     34777.259],
+    [9,     227.73,     1222.114],
+    [8,     15.45,      16859.074],
+];
+
+let S=0;
+for(let i=0;i<table27c.length;i++){
+    let t=table27c[i];
+    S+=t[0] * Math.cos((t[1]+t[2]*T)*rad);
+}
+
+
+const JDE=JDE0 + (0.00001*S)/Δλ;
+console.log("S",S);
+console.log("JDE",JDE);
+console.log("Err",2437837.39245-JDE);
+
+</script>
+</body>
+</html>

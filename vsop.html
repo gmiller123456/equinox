@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title></title>
+<link rel="stylesheet" href="default.css">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+body{}
+</style>
+</head>    
+<body>
+<script src="vsop87a_full.js"></script>
+<script src="vsop87a_full_velocities.js"></script>
+<script src="CelestialProgrammingReduce.js"></script>    
+<script>
+let t=CPReduce.reduce(CPReduce.SUN,2437837.39245,[0,0,0]);
+console.log(t.map(a => a*180/Math.PI));
+
+t=CPReduce.reduce(CPReduce.SUN,2437837.39213,[0,0,-6371000/149597870691]);
+console.log(t.map(a => a*180/Math.PI));
+
+function equitorialToEcliptic(ra,dec,eps){
+    const λ=Math.atan2(Math.sin(ra)*Math.cos(eps)+Math.tan(dec)*Math.sin(eps),Math.cos(ra));
+    const β=Math.asin(Math.sin(dec)*Math.cos(eps) - Math.cos(dec)*Math.sin(eps)*Math.sin(ra));
+    return [λ,β]
+}
+
+</script>
+</body>
+</html>
